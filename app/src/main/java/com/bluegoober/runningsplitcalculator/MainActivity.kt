@@ -173,11 +173,11 @@ class MainActivity : AppCompatActivity() {
         splitRecycler.layoutManager = layoutManager
         splitRecycler.adapter = splitAdapter
 
-        //Call the method to hide the keyboard
+        //Call the function to hide the keyboard
         hideKeyboard(this)
     }
 
-    //Method to hide the keyboard
+    //Function to hide the keyboard
     private fun hideKeyboard(activity: Activity) {
         val inputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         var view = activity.currentFocus
