@@ -12,11 +12,12 @@
         android:id="@+id/split_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="800m"
+        android:text="@string/placeholder_distance"
         android:layout_gravity="center"
         android:textSize="38sp"/>
     <ImageView
         android:id="@+id/expand_split_card"
+        android:contentDescription="@string/expand_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
@@ -37,6 +38,7 @@
     <ImageView
         android:visibility="gone"
         android:id="@+id/expand_split_card_bottom"
+        android:contentDescription="@string/expand_less"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
