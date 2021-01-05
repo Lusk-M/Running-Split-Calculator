@@ -1,0 +1,7 @@
+<resources>
+    <!-- Input measurement systems -->
+    <string-array name="measurement_systems">
+        <item>Meters</item>
+        <item>Miles</item>
+    </string-array>
+</resources>

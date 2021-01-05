@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/split_card_holder"
+    android:layout_width="match_parent"
+    android:minHeight="80dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/split_layout_background"
+    android:layout_margin="15dp"
+    android:padding="10dp"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/split_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="800m"
+        android:layout_gravity="center"
+        android:textSize="38sp"/>
+    <ImageView
+        android:id="@+id/expand_split_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/baseline_expand_more_24" />
+    <LinearLayout
+        android:id="@+id/split_expand_list"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+    <TextView
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:id="@+id/split_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/expand_split_card_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/baseline_expand_less_24" />
+
+</LinearLayout>
