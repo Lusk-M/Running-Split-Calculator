@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     private var calcSplit: Button? = null
     private var splitTime: Double = 0.0
     private var splitDistance: Double = 0.0
+    private var splitCustomDistance: Double = 0.0
+    private var splitCustomType: String = "All"
     private var splitUnit: String = SplitCalculator.METRIC_UNITS
     private val splitList = ArrayList<SplitObject>()
 
@@ -105,6 +107,8 @@ class MainActivity : AppCompatActivity() {
         outState.putLong(TIME_KEY_NAME, java.lang.Double.doubleToRawLongBits(splitTime))
         outState.putLong(DISTANCE_KEY_NAME, java.lang.Double.doubleToRawLongBits(splitDistance))
         outState.putString(UNIT_KEY_NAME, splitUnit)
+        outState.putLong(CUSTOM_DISTANCE_KEY_NAME, java.lang.Double.doubleToRawLongBits(splitCustomDistance))
+        outState.putString(SPLIT_TYPE_KEY_NAME, splitCustomType)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -112,7 +116,9 @@ class MainActivity : AppCompatActivity() {
         splitTime = java.lang.Double.longBitsToDouble(savedInstanceState.getLong(TIME_KEY_NAME, 0))
         splitDistance = java.lang.Double.longBitsToDouble(savedInstanceState.getLong(DISTANCE_KEY_NAME, 0))
         splitUnit = savedInstanceState.getString(UNIT_KEY_NAME, SplitCalculator.METRIC_UNITS).toString()
-        createSplitLayout(splitTime, splitDistance, splitUnit, "All",  0.0)
+        splitCustomType = savedInstanceState.getString(SPLIT_TYPE_KEY_NAME.toString(), "All")
+        splitCustomDistance = java.lang.Double.longBitsToDouble(savedInstanceState.getLong(CUSTOM_DISTANCE_KEY_NAME, 0))
+        createSplitLayout(splitTime, splitDistance, splitUnit, splitCustomType,  splitCustomDistance)
     }
 
     private fun onSubmitCalc() {
@@ -147,21 +153,23 @@ class MainActivity : AppCompatActivity() {
 
         //Check if the user selected a custom split and set the corresponding variable
         val splitType = splitTypeSpinner!!.selectedItem.toString()
-        var splitCustomDistance = 0.0
+        var customDistance = 0.0
         if(splitType == "Custom Distance" && splitDistanceInput!!.text.toString().isNotEmpty()) {
-            splitCustomDistance = splitDistanceInput!!.text.toString().toDouble()
+            customDistance = splitDistanceInput!!.text.toString().toDouble()
         }
 
         //Set global variables
         splitTime = totalSecond
         splitDistance = distance
         splitUnit = units
+        splitCustomType = splitType
+        splitCustomDistance = customDistance
 
         //Call the method to create the split card layout
-        createSplitLayout(totalSecond, distance, units, splitType, splitCustomDistance)
+        createSplitLayout(totalSecond, distance, units, splitCustomType, splitCustomDistance)
     }
 
-    private fun createSplitLayout( totalSecond: Double, distance: Double, units: String,splitType: String, splitCustomDistance: Double) {
+    private fun createSplitLayout( totalSecond: Double, distance: Double, units: String, splitType: String, splitCustomDistance: Double) {
         //Clear the split list of any current entries
         splitList.clear()
 
@@ -293,5 +301,7 @@ class MainActivity : AppCompatActivity() {
         private const val DISTANCE_KEY_NAME: String = "SAVED_DISTANCE"
         private const val TIME_KEY_NAME: String = "SAVED_TIME"
         private const val UNIT_KEY_NAME: String = "SAVED_UNIT"
+        private const val CUSTOM_DISTANCE_KEY_NAME: String = "SAVED_CUSTOM_DISTANCE"
+        private const val SPLIT_TYPE_KEY_NAME: String ="SPLIT_TYPE"
     }
 }
