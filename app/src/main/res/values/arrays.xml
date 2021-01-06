@@ -4,4 +4,12 @@
         <item>Meters</item>
         <item>Miles</item>
     </string-array>
+
+    <!-- Split Type -->
+    <string-array name="split_type">
+        <item>All</item>
+        <item>Meters Only</item>
+        <item>Mile Only</item>
+        <item>Custom Distance</item>
+    </string-array>
 </resources>

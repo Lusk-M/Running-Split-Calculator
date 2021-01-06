@@ -69,12 +69,11 @@
         android:id="@+id/calcSplitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:text="@string/button_calc_splits"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/distanceInput" />
+        app:layout_constraintTop_toBottomOf="@+id/customLapLayout" />
 
     <Spinner
         android:id="@+id/distanceSystemSpinner"
@@ -85,6 +84,49 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/distanceInput"
         app:layout_constraintTop_toBottomOf="@+id/timeInputContainer" />
+
+    <Spinner
+        android:layout_margin="12dp"
+        android:id="@+id/customLapSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/distanceInput" />
+
+    <LinearLayout
+        android:id="@+id/customLapLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customLapSpinner"
+        android:orientation="horizontal"
+        android:visibility="gone">
+        <EditText
+            android:id="@+id/splitDistanceInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:ems="10"
+            android:hint="distance"
+            android:inputType="numberDecimal"
+            android:maxLength="5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timeInputContainer" />
+        <Spinner
+            android:id="@+id/splitDistanceSystemSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="28dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/distanceInput"
+            app:layout_constraintTop_toBottomOf="@+id/timeInputContainer" />
+
+    </LinearLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView

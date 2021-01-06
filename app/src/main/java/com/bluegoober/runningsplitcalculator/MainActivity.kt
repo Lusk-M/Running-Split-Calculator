@@ -4,12 +4,14 @@ import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputFilter
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
     //Create variables for the values and views used
@@ -17,7 +19,10 @@ class MainActivity : AppCompatActivity() {
     private var minutesInput: EditText? = null
     private var secondsInput: EditText? = null
     private var distanceInput: EditText? = null
+    private var splitDistanceInput: EditText? = null
     private var unitSpinner: Spinner? = null
+    private var splitTypeSpinner: Spinner? = null
+    private var splitUnitSpinner: Spinner? = null
     private var calcSplit: Button? = null
     private var splitTime: Double = 0.0
     private var splitDistance: Double = 0.0
@@ -33,10 +38,13 @@ class MainActivity : AppCompatActivity() {
         minutesInput = findViewById(R.id.minutesInput)
         secondsInput = findViewById(R.id.secondsInput)
         distanceInput = findViewById(R.id.distanceInput)
+        splitDistanceInput = findViewById(R.id.splitDistanceInput)
         calcSplit = findViewById(R.id.calcSplitButton)
         unitSpinner = findViewById<View>(R.id.distanceSystemSpinner) as Spinner
+        splitTypeSpinner = findViewById(R.id.customLapSpinner)
+        splitUnitSpinner = findViewById(R.id.splitDistanceSystemSpinner)
 
-        //Setup spinner and onItemSelected handler
+        //Setup unit spinner and onItemSelected handler
         val adapter = ArrayAdapter.createFromResource(this, R.array.measurement_systems, android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         unitSpinner!!.adapter = adapter
@@ -60,6 +68,33 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+
+        //Setup split type spinner and onItemSelected handler
+        val splitTypeAdapter = ArrayAdapter.createFromResource(this, R.array.split_type, android.R.layout.simple_spinner_item)
+        splitTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        splitTypeSpinner!!.adapter = splitTypeAdapter
+        splitTypeSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val customSplitLayout: LinearLayout = findViewById(R.id.customLapLayout)
+                //If the user selects a custom split display the custom split inputs
+                if(position == 3) {
+                    customSplitLayout.visibility = View.VISIBLE
+                }
+                else {
+                    customSplitLayout.visibility = View.GONE
+                }
+            }
+        }
+
+        //Setup the spinner for the custom split distance option
+        val splitUnitAdapter = ArrayAdapter.createFromResource(this, R.array.measurement_systems, android.R.layout.simple_spinner_item)
+        splitUnitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        splitUnitSpinner!!.adapter = splitUnitAdapter
+
         calcSplit?.setOnClickListener { onSubmitCalc() }
     }
 
@@ -77,7 +112,7 @@ class MainActivity : AppCompatActivity() {
         splitTime = java.lang.Double.longBitsToDouble(savedInstanceState.getLong(TIME_KEY_NAME, 0))
         splitDistance = java.lang.Double.longBitsToDouble(savedInstanceState.getLong(DISTANCE_KEY_NAME, 0))
         splitUnit = savedInstanceState.getString(UNIT_KEY_NAME, SplitCalculator.METRIC_UNITS).toString()
-        createSplitLayout(splitTime, splitDistance, splitUnit)
+        createSplitLayout(splitTime, splitDistance, splitUnit, "All",  0.0)
     }
 
     private fun onSubmitCalc() {
@@ -110,60 +145,127 @@ class MainActivity : AppCompatActivity() {
             units = SplitCalculator.IMPERIAL_UNITS
         }
 
+        //Check if the user selected a custom split and set the corresponding variable
+        val splitType = splitTypeSpinner!!.selectedItem.toString()
+        var splitCustomDistance = 0.0
+        if(splitType == "Custom Distance" && splitDistanceInput!!.text.toString().isNotEmpty()) {
+            splitCustomDistance = splitDistanceInput!!.text.toString().toDouble()
+        }
+
         //Set global variables
         splitTime = totalSecond
         splitDistance = distance
         splitUnit = units
 
         //Call the method to create the split card layout
-        createSplitLayout(totalSecond, distance, units)
+        createSplitLayout(totalSecond, distance, units, splitType, splitCustomDistance)
     }
 
-    private fun createSplitLayout( totalSecond: Double, distance: Double, units: String) {
+    private fun createSplitLayout( totalSecond: Double, distance: Double, units: String,splitType: String, splitCustomDistance: Double) {
         //Clear the split list of any current entries
         splitList.clear()
 
         //Get new instance of SplitCalculator
         val splitCalculator = SplitCalculator(totalSecond, distance, units)
 
-        //Get the split strings for each distance and put them in SplitObjects
-        val split1000: String = splitCalculator.getMetricSplit(1000)
-        val split1000Object = SplitObject("1000m", split1000)
-        val split1600: String = splitCalculator.getMetricSplit(1600)
-        val split1600Object = SplitObject( "1600m", split1600)
-        val split800: String = splitCalculator.getMetricSplit(800)
-        val split800Object = SplitObject("800m", split800)
-        val split400: String = splitCalculator.getMetricSplit(400)
-        val split400Object = SplitObject("400m", split400)
-        val split200: String = splitCalculator.getMetricSplit(200)
-        val split200Object = SplitObject("200m", split200)
-        val split100: String = splitCalculator.getMetricSplit(100)
-        val split100Object = SplitObject("100m", split100)
-        val splitHalfMile: String = splitCalculator.getImperialSplit(0.5)
-        val splitHalfMileObject = SplitObject("Half Mile", splitHalfMile)
-        val splitMile: String = splitCalculator.getImperialSplit(1.0)
-        val splitMileObject = SplitObject("One Mile", splitMile)
-        val splitTwoMile: String = splitCalculator.getImperialSplit(2.0)
-        val splitTwoMileObject = SplitObject("Two Mile", splitTwoMile)
+        //If the user selected meter only splits
+        if(splitType == "Meters Only"){
+            val split1000: String = splitCalculator.getMetricSplit(1000)
+            val split1000Object = SplitObject("1000m", split1000)
+            val split1600: String = splitCalculator.getMetricSplit(1600)
+            val split1600Object = SplitObject( "1600m", split1600)
+            val split800: String = splitCalculator.getMetricSplit(800)
+            val split800Object = SplitObject("800m", split800)
+            val split400: String = splitCalculator.getMetricSplit(400)
+            val split400Object = SplitObject("400m", split400)
+            val split200: String = splitCalculator.getMetricSplit(200)
+            val split200Object = SplitObject("200m", split200)
+            val split100: String = splitCalculator.getMetricSplit(100)
+            val split100Object = SplitObject("100m", split100)
 
-        //If the user selected imperial units display the mile splits first
-        if(units.toLowerCase() == SplitCalculator.IMPERIAL_UNITS) {
+            splitList.add(split100Object)
+            splitList.add(split200Object)
+            splitList.add(split400Object)
+            splitList.add(split800Object)
+            splitList.add(split1000Object)
+            splitList.add(split1600Object)
+        }
+        //If the user selected only mile splits
+        else if(splitType == "Mile Only") {
+            val splitHalfMile: String = splitCalculator.getImperialSplit(0.5)
+            val splitHalfMileObject = SplitObject("Half Mile", splitHalfMile)
+            val splitMile: String = splitCalculator.getImperialSplit(1.0)
+            val splitMileObject = SplitObject("One Mile", splitMile)
+            val splitTwoMile: String = splitCalculator.getImperialSplit(2.0)
+            val splitTwoMileObject = SplitObject("Two Mile", splitTwoMile)
+
             splitList.add(splitHalfMileObject)
             splitList.add(splitMileObject)
             splitList.add(splitTwoMileObject)
         }
-        //Add the splits to the split list
-        splitList.add(split100Object)
-        splitList.add(split200Object)
-        splitList.add(split400Object)
-        splitList.add(split800Object)
-        splitList.add(split1000Object)
-        splitList.add(split1600Object)
-        //If the user selected metric splits add the mile splits last
-        if(units == SplitCalculator.METRIC_UNITS) {
-            splitList.add(splitHalfMileObject)
-            splitList.add(splitMileObject)
-            splitList.add(splitTwoMileObject)
+        //If the user selected a custom split distance
+        else if(splitType == "Custom Distance") {
+            val customSplit: String
+            val splitUnit: String
+            //Get the split based on which unit system the user selected
+            if(splitUnitSpinner!!.selectedItem.toString() == "Miles") {
+                customSplit = splitCalculator.getImperialSplit(splitCustomDistance)
+                splitUnit = "mile"
+            }
+            else {
+                customSplit = splitCalculator.getMetricSplit(splitCustomDistance.roundToInt())
+                splitUnit = "meters"
+            }
+
+            //Setup the split object with the user input and
+            val customSplitObject = SplitObject("$splitCustomDistance $splitUnit", customSplit)
+            splitList.add(customSplitObject)
+        }
+
+        //Else display all of the standard splits
+        else {
+
+            //Get the split strings for each distance and put them in SplitObjects
+            val split1000: String = splitCalculator.getMetricSplit(1000)
+            val split1000Object = SplitObject("1000m", split1000)
+            val split1600: String = splitCalculator.getMetricSplit(1600)
+            val split1600Object = SplitObject( "1600m", split1600)
+            val split800: String = splitCalculator.getMetricSplit(800)
+            val split800Object = SplitObject("800m", split800)
+            val split400: String = splitCalculator.getMetricSplit(400)
+            val split400Object = SplitObject("400m", split400)
+            val split200: String = splitCalculator.getMetricSplit(200)
+            val split200Object = SplitObject("200m", split200)
+            val split100: String = splitCalculator.getMetricSplit(100)
+            val split100Object = SplitObject("100m", split100)
+            val splitHalfMile: String = splitCalculator.getImperialSplit(0.5)
+            val splitHalfMileObject = SplitObject("Half Mile", splitHalfMile)
+            val splitMile: String = splitCalculator.getImperialSplit(1.0)
+            val splitMileObject = SplitObject("One Mile", splitMile)
+            val splitTwoMile: String = splitCalculator.getImperialSplit(2.0)
+            val splitTwoMileObject = SplitObject("Two Mile", splitTwoMile)
+
+
+            //If the user selected imperial units display the mile splits first
+            if (units.toLowerCase() == SplitCalculator.IMPERIAL_UNITS) {
+                splitList.add(splitHalfMileObject)
+                splitList.add(splitMileObject)
+                splitList.add(splitTwoMileObject)
+            }
+            //Add the splits to the split list
+            splitList.add(split100Object)
+            splitList.add(split200Object)
+            splitList.add(split400Object)
+            splitList.add(split800Object)
+            splitList.add(split1000Object)
+            splitList.add(split1600Object)
+
+            //If the user selected metric splits add the mile splits last
+            if (units == SplitCalculator.METRIC_UNITS) {
+                splitList.add(splitHalfMileObject)
+                splitList.add(splitMileObject)
+                splitList.add(splitTwoMileObject)
+            }
         }
 
         //Create split adapter, recycler view, and layout manager
