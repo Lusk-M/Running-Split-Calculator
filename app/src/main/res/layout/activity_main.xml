@@ -110,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
             android:ems="10"
-            android:hint="distance"
+            android:hint="@string/hint_distance"
             android:inputType="numberDecimal"
             android:maxLength="5"
             app:layout_constraintEnd_toEndOf="parent"
