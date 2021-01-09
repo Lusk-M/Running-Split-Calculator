@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
         splitTime = java.lang.Double.longBitsToDouble(savedInstanceState.getLong(TIME_KEY_NAME, 0))
         splitDistance = java.lang.Double.longBitsToDouble(savedInstanceState.getLong(DISTANCE_KEY_NAME, 0))
         splitUnit = savedInstanceState.getString(UNIT_KEY_NAME, SplitCalculator.METRIC_UNITS).toString()
-        splitCustomType = savedInstanceState.getString(SPLIT_TYPE_KEY_NAME.toString(), "All")
+        splitCustomType = savedInstanceState.getString(SPLIT_TYPE_KEY_NAME, "All")
         splitCustomDistance = java.lang.Double.longBitsToDouble(savedInstanceState.getLong(CUSTOM_DISTANCE_KEY_NAME, 0))
         createSplitLayout(splitTime, splitDistance, splitUnit, splitCustomType,  splitCustomDistance)
     }
