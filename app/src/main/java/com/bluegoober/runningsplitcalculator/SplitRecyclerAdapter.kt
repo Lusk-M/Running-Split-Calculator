@@ -22,18 +22,22 @@ class SplitRecyclerAdapter (val splitList : ArrayList<SplitObject>, val context:
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        //Set the variables used with the layout and views
         val cardLayout: LinearLayout = holder.splitLayout
         val splitTextView: TextView = cardLayout.findViewById(R.id.split_container)
         val splitTitle: TextView = cardLayout.findViewById(R.id.split_title)
         val currentSplit: SplitObject = splitList[position]
         val expandCard: ImageView = cardLayout.findViewById(R.id.expand_split_card)
         val expandCardBottom: ImageView = cardLayout.findViewById(R.id.expand_split_card_bottom)
+        //Set the title and split text to the views
         splitTextView.text = currentSplit.splitText
         splitTitle.text = currentSplit.splitName
 
         //Set the click listener to expand and collapse the split view on user input
         expandCard.setOnClickListener {
             val expandLayout: LinearLayout = cardLayout.findViewById(R.id.split_expand_list)
+            //If the layout is gone, set it to visible and change the icon to indicate the user can collapse the card
+            //Else set the view to gone and set the icon to let the user expand the card
             if (expandLayout.visibility == View.GONE) {
                 expandLayout.visibility = View.VISIBLE
                 expandCard.setImageResource(R.drawable.baseline_expand_less_24)
