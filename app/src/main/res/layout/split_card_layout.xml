@@ -20,9 +20,10 @@
     <ImageView
         android:id="@+id/expand_split_card"
         android:contentDescription="@string/expand_more"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="end|bottom"
+        android:scaleType="fitXY"
         android:src="@drawable/baseline_expand_more_24" />
     <LinearLayout
         android:id="@+id/split_expand_list"
@@ -41,9 +42,10 @@
         android:visibility="gone"
         android:id="@+id/expand_split_card_bottom"
         android:contentDescription="@string/expand_less"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="end|bottom"
+        android:scaleType="fitXY"
         android:src="@drawable/baseline_expand_less_24" />
 
 </LinearLayout>
