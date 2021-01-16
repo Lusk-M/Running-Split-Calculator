@@ -5,9 +5,9 @@
     <string name="button_calc_splits">Calculate Splits</string>
 
     <!-- Input Hints -->
-    <string name="hint_hours">hours</string>
-    <string name="hint_minutes">minutes</string>
-    <string name="hint_seconds">seconds</string>
+    <string name="hint_hours">Hours</string>
+    <string name="hint_minutes">Minutes</string>
+    <string name="hint_seconds">Seconds</string>
     <string name="hint_distance">Distance</string>
 
     <!-- Placeholder Attributes -->
