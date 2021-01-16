@@ -19,51 +19,66 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_hours"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/hoursInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="5"
-            android:hint="@string/hint_hours"
-            android:inputType="number"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="@string/hint_minutes"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/minutesInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:ems="5"
-            android:hint="@string/hint_minutes"
-            android:inputType="number"
-            app:layout_constraintStart_toEndOf="@+id/hoursInput"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_seconds"
+            android:layout_marginStart="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/secondsInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:ems="5"
-            android:hint="@string/hint_seconds"
-            android:inputType="number"
-            app:layout_constraintStart_toEndOf="@+id/minutesInput"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/distanceInputLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_distance"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeInputContainer"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
     <EditText
         android:id="@+id/distanceInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
         android:ems="8"
-        android:hint="@string/hint_distance"
         android:inputType="numberDecimal"
-        android:maxLength="5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timeInputContainer" />
+        android:maxLength="5" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/calcSplitButton"
@@ -72,6 +87,7 @@
         android:text="@string/button_calc_splits"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/customLapLayout" />
 
@@ -83,7 +99,7 @@
         android:layout_marginTop="28dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/distanceInput"
+        app:layout_constraintStart_toEndOf="@+id/distanceInputLayout"
         app:layout_constraintTop_toBottomOf="@+id/timeInputContainer" />
 
     <Spinner
@@ -94,7 +110,7 @@
         android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/distanceInput" />
+        app:layout_constraintTop_toBottomOf="@+id/distanceInputLayout" />
 
     <LinearLayout
         android:id="@+id/customLapLayout"
@@ -105,18 +121,23 @@
         app:layout_constraintTop_toBottomOf="@+id/customLapSpinner"
         android:orientation="horizontal"
         android:visibility="gone">
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_distance"
+            android:layout_marginTop="28dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timeInputContainer">
         <EditText
             android:id="@+id/splitDistanceInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
             android:ems="10"
-            android:hint="@string/hint_distance"
             android:inputType="numberDecimal"
-            android:maxLength="5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/timeInputContainer" />
+            android:maxLength="5" />
+        </com.google.android.material.textfield.TextInputLayout>
         <Spinner
             android:id="@+id/splitDistanceSystemSpinner"
             android:layout_width="wrap_content"
