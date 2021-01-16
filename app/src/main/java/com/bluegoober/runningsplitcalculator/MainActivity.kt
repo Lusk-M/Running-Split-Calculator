@@ -1,14 +1,13 @@
 package com.bluegoober.runningsplitcalculator
 
 import android.app.Activity
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputFilter
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.roundToInt
@@ -118,7 +117,7 @@ class MainActivity : AppCompatActivity() {
         splitUnit = savedInstanceState.getString(UNIT_KEY_NAME, SplitCalculator.METRIC_UNITS).toString()
         splitCustomType = savedInstanceState.getString(SPLIT_TYPE_KEY_NAME, "All")
         splitCustomDistance = java.lang.Double.longBitsToDouble(savedInstanceState.getLong(CUSTOM_DISTANCE_KEY_NAME, 0))
-        createSplitLayout(splitTime, splitDistance, splitUnit, splitCustomType,  splitCustomDistance)
+        createSplitLayout(splitTime, splitDistance, splitUnit, splitCustomType, splitCustomDistance)
     }
 
     private fun onSubmitCalc() {
@@ -169,7 +168,7 @@ class MainActivity : AppCompatActivity() {
         createSplitLayout(totalSecond, distance, units, splitCustomType, splitCustomDistance)
     }
 
-    private fun createSplitLayout( totalSecond: Double, distance: Double, units: String, splitType: String, splitCustomDistance: Double) {
+    private fun createSplitLayout(totalSecond: Double, distance: Double, units: String, splitType: String, splitCustomDistance: Double) {
         //Clear the split list of any current entries
         splitList.clear()
 
@@ -181,7 +180,7 @@ class MainActivity : AppCompatActivity() {
             val split1000: String = splitCalculator.getMetricSplit(1000)
             val split1000Object = SplitObject("1000m", split1000)
             val split1600: String = splitCalculator.getMetricSplit(1600)
-            val split1600Object = SplitObject( "1600m", split1600)
+            val split1600Object = SplitObject("1600m", split1600)
             val split800: String = splitCalculator.getMetricSplit(800)
             val split800Object = SplitObject("800m", split800)
             val split400: String = splitCalculator.getMetricSplit(400)
@@ -237,7 +236,7 @@ class MainActivity : AppCompatActivity() {
             val split1000: String = splitCalculator.getMetricSplit(1000)
             val split1000Object = SplitObject("1000m", split1000)
             val split1600: String = splitCalculator.getMetricSplit(1600)
-            val split1600Object = SplitObject( "1600m", split1600)
+            val split1600Object = SplitObject("1600m", split1600)
             val split800: String = splitCalculator.getMetricSplit(800)
             val split800Object = SplitObject("800m", split800)
             val split400: String = splitCalculator.getMetricSplit(400)
@@ -280,6 +279,8 @@ class MainActivity : AppCompatActivity() {
         val splitAdapter = SplitRecyclerAdapter(splitList, this)
         val splitRecycler: RecyclerView = findViewById(R.id.split_recycler)
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(this, 1)
+        val dividerItemDecoration = DividerItemDecoration(splitRecycler.context, GridLayoutManager.VERTICAL)
+        splitRecycler.addItemDecoration(dividerItemDecoration)
         splitRecycler.layoutManager = layoutManager
         splitRecycler.adapter = splitAdapter
 
