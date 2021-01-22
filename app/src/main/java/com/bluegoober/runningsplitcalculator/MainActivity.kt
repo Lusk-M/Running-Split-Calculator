@@ -165,7 +165,13 @@ class MainActivity : AppCompatActivity() {
         splitCustomDistance = customDistance
 
         //Call the method to create the split card layout
-        createSplitLayout(totalSecond, distance, units, splitCustomType, splitCustomDistance)
+        if(distance > 1000 && units == SplitCalculator.IMPERIAL_UNITS) {
+           val toast: Toast = Toast.makeText(this, "Due to processing constraints distances over 1000 miles are not supported", Toast.LENGTH_LONG)
+           toast.show()
+        }
+        else {
+            createSplitLayout(totalSecond, distance, units, splitCustomType, splitCustomDistance)
+        }
     }
 
     private fun createSplitLayout(totalSecond: Double, distance: Double, units: String, splitType: String, splitCustomDistance: Double) {
