@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                 //If the user has imperial units selected, limit the distance input to 3
                 //Otherwise keep the input limit to 5
                 val filterArray = arrayOfNulls<InputFilter>(1)
-                filterArray[0] = InputFilter.LengthFilter(3)
+                filterArray[0] = InputFilter.LengthFilter(4)
                 if(position == 1)
                     distanceInput?.filters = filterArray
                 else {
